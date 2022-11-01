@@ -1,24 +1,24 @@
-.res-box{
-  padding: 7em 0;
+.res-box {
+  padding: 5em 0;
 }
-.Result{
+.Result {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 300px;
-  border: 3px solid green; 
+  border: 3px solid green;
   max-width: 60%;
-  margin:auto;
-}
-.Buttons{
   margin: auto;
-  display:flex;
+}
+.Buttons {
+  margin: auto;
+  display: flex;
   justify-content: space-between;
   max-width: 60%;
 }
 
-.btn{
-  background-color: #4CAF50; /* Green */
+.btn {
+  background-color: #4caf50; /* Green */
   border: none;
   color: white;
   padding: 15px 32px;
@@ -26,4 +26,8 @@
   text-decoration: none;
   display: inline-block;
   font-size: 24px;
+}
+
+.head-text {
+  text-align: center;
 }
