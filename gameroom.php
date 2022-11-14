@@ -1,4 +1,8 @@
 <?php
+if($_SERVER['HTTPS']) {
+    $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    header('Location: '.$actual_link);
+}
 $gameRoomNumber = (preg_match('~^420(69|70|71|72|73)$~', $_GET['room'])) ? $_GET['room'] : null; // 5 rooms are available
 $castingEndpoint = "/:".$gameRoomNumber;
 $currentPlayer = (preg_match('~^[12]$~', $_GET['p'])) ? $_GET['p'] : null; // 5 rooms are available;
@@ -11,8 +15,15 @@ if(empty($_SESSION['playerID'])) {
 $playerID = $_SESSION['playerID'];
 if(!$gameRoomNumber) {exit('Invalid game room');}
 // Initialize server room thread
-//exec('python3 api/rps.py ' . $gameRoomNumber . ' > /dev/null &'); // Must redirect output otherwise will hang
-
+$bufferID = 5-(42073-intval($gameRoomNumber));
+if(!file_exists('api/buffer_' . $bufferID)) {
+    exec('nohup python3 api/rps.py ' . $gameRoomNumber . ' >> /dev/null 2>&1 & echo $!', $pid);
+    if($pid) {
+        sleep(1);
+    } else {
+        exit('unable to start game script');
+    }
+}
 $curl_handle=curl_init();
 curl_setopt($curl_handle,CURLOPT_URL,'http://cpp3800.edwin-dev.com:'.$gameRoomNumber.'/?login='.$currentPlayer.'&playerid='.$playerID);
 curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
