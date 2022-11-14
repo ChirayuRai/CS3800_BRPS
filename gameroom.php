@@ -181,7 +181,7 @@ else{
             //check for browser support
             if (typeof (EventSource) !== "undefined") {
                 //var eSource = new EventSource("http://cpp3800.edwin-dev.com:<?=$gameRoomNumber;?>/sse");
-                var eSource = new EventSource("http://cpp3800.edwin-dev.com/api/sse_buffer.php");
+                var eSource = new EventSource("http://cpp3800.edwin-dev.com/api/sse_buffer.php?room=<?=$gameRoomNumber;?>");
                 //detect message receipt
                 console.log("SSE load ok");
                 eSource.addEventListener("login_ok", (event) => {

@@ -4,8 +4,14 @@ header("Cache-Control: no-store");
 header("Content-Type: text/event-stream");
 
 $counter = 0;
+$roomNumber = (preg_match('~^[0-9]{5}$~', $_GET['room'])) ? $_GET['room'] : null;
+if(!$roomNumber) {
+    exit('invalid room number');
+} else {
+    $roomNumber = 5-(42073-intval($roomNumber)); // Yields a room number 1-5
+}
 while (true) {
-    $lines = file('buffer_1');
+    $lines = file('buffer_' . $roomNumber);
     // First we want to parse all lines in the file before jumping into ping mode
     if($counter == 0) {
         $numberlines = count($lines);
