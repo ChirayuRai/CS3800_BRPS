@@ -11,7 +11,8 @@ if(empty($_SESSION['playerID'])) {
 $playerID = $_SESSION['playerID'];
 if(!$gameRoomNumber) {exit('Invalid game room');}
 // Initialize server room thread
-//exec('api/python3 rps.py ' . $gameRoomNumber . ' > /dev/null &'); // Must redirect output otherwise will hang
+//exec('python3 api/rps.py ' . $gameRoomNumber . ' > /dev/null &'); // Must redirect output otherwise will hang
+
 $curl_handle=curl_init();
 curl_setopt($curl_handle,CURLOPT_URL,'http://cpp3800.edwin-dev.com:'.$gameRoomNumber.'/?login='.$currentPlayer.'&playerid='.$playerID);
 curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
@@ -48,6 +49,9 @@ else{
 			margin: 0 auto;
 			width: 720px;
 		}
+        #gameover {
+            margin-top: 15px;
+        }
         #roundResults .result {
             display: inline-block;
             font-weight: bold;
@@ -181,7 +185,7 @@ else{
             //check for browser support
             if (typeof (EventSource) !== "undefined") {
                 //var eSource = new EventSource("http://cpp3800.edwin-dev.com:<?=$gameRoomNumber;?>/sse");
-                var eSource = new EventSource("http://cpp3800.edwin-dev.com/api/sse_buffer.php");
+                var eSource = new EventSource("http://cpp3800.edwin-dev.com/api/sse_buffer.php?room=<?=$gameRoomNumber;?>");
                 //detect message receipt
                 console.log("SSE load ok");
                 eSource.addEventListener("login_ok", (event) => {

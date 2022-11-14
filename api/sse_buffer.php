@@ -4,8 +4,14 @@ header("Cache-Control: no-store");
 header("Content-Type: text/event-stream");
 
 $counter = 0;
+$roomNumber = (preg_match('~^[0-9]{5}$~', $_GET['room'])) ? $_GET['room'] : null;
+if(!$roomNumber) {
+    exit('invalid room number');
+} else {
+    $roomNumber = 5-(42073-intval($roomNumber)); // Yields a room number 1-5
+}
 while (true) {
-    $lines = file('buffer_1');
+    $lines = file('buffer_' . $roomNumber);
     // First we want to parse all lines in the file before jumping into ping mode
     if($counter == 0) {
         $numberlines = count($lines);
@@ -30,7 +36,7 @@ while (true) {
 function parseLine($inputline, $counter) {
     $encodedLine = preg_replace('~\"(rock|paper|scissors|null)\"~', '\"$1\"', $inputline);
     $encodedLine = preg_replace('~\"p(1|2)cast\"\:\s\\\"(rock|paper|scissors)\\\"~', '"p$1cast": "$2"', $encodedLine);
-    preg_match('~\"gamelog\"\:\s(.*)\}$~', $encodedLine, $jsonbuffer);
+    preg_match('~\"gamelog\"\:\s\"(.*)\"\}~', $encodedLine, $jsonbuffer);
     $line = json_decode($encodedLine, true);
     $output = "id: {$counter}\n";
     $output .= "event: {$line['event']}\n";
@@ -39,7 +45,7 @@ function parseLine($inputline, $counter) {
     if($line['event'] == "round_winner") {
         $output .= ', "p1cast": "' . $line['p1cast'] . '", "p2cast": "' . $line['p2cast'] . '"';
     }
-    $output .= ', "gamelog": ' . $jsonbuffer[1];
+    $output .= ', "gamelog": "' . $jsonbuffer[1] . '"';
     $output .= '}';
     $output .= "\n\n";
     echo $output;

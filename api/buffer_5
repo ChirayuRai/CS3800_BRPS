@@ -1,0 +1,2 @@
+{"event": "init", "msg": "Game instance initialized", "time": "13/11/2022 20:24:00", "context": "None", "p1score": "0", "p2score": "0", "gamelog": "[[null, null], [null, null], [null, null], [null, null], [null, null]]"}
+{"event": "login_ok", "msg": "Player 1 logged in with id 6371ad71398e0", "time": "13/11/2022 20:24:10", "context": "1", "p1score": "0", "p2score": "0", "gamelog": "[[null, null], [null, null], [null, null], [null, null], [null, null]]"}
