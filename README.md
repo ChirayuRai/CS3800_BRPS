@@ -1,11 +1,9 @@
 # Socket-To-Me Rock-Paper-Scissors
 
-Step 1: Open the game room thread
+Step 1: Load the index.php file
 
-./python3 rps.py 42069
+Either do this using XAMPP, or installing by php using your favorite package manager, and running 
 
-Step 2: Initiate casting over HTTP (HTTPS NOT SUPPORTED)
+php -S localhost:3000
 
-http://localhost:42069/?p1=rock
-http://localhost:42069/?p2=paper
-...
+Step 2: Once successfully loaded in, just join an available room as P1 or P2, and enjoy!
