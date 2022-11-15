@@ -1,4 +1,6 @@
 import datetime
+import time
+import os
 from socket import *
 import sys  # In order to terminate the program
 import json
@@ -38,9 +40,12 @@ def bufferWrite(event_type, msg, context=None, p1cast=None, p2cast=None):
     data += ', "gamelog": "' + json.dumps(p_input) + '"'
     data += '}'
     line = data if event_type == "init" else '\n' + data
-    with open('buffer_' + str(buffernumber), writemode) as f:
+    with open('api/buffer_' + str(buffernumber), writemode) as f:
         f.write(line)
     eventID += 1
+    if event_type == "game_winner":
+        time.sleep(10)
+        os.remove('api/buffer_' + str(buffernumber))
 
 
 def loginplayer(p, playerid, response):
