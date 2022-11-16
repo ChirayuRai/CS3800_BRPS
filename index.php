@@ -70,7 +70,7 @@ $numRooms = 5;
 						echo "<button type='button' onclick='location.href=\"http://cpp3800.edwin-dev.com/gameroom.php?room={$room}&p=1\"'>Join as P1</button>";
 					}
 					if($available[1]) {
-						echo "<button type='button' onclick='location.href=\"http://cpp3800.edwin-dev.com/gameroom.php?room={$room}&p=1\"'>Join as P2</button>";
+						echo "<button type='button' onclick='location.href=\"http://cpp3800.edwin-dev.com/gameroom.php?room={$room}&p=2\"'>Join as P2</button>";
 					}
 					if(!$available[0] && !$available[1]) {
 						echo "Room is occupied";
