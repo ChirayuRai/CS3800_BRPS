@@ -37,6 +37,7 @@ $numRooms = 5;
 	</style>
 </head>
 <body>
+	<h1>Welcome to Socket-to-Me Rock Paper Scissors</h1>
 	<?php
 		for ($i=1; $i <= $numRooms; $i++) { 
 			$available = array(true, true);
