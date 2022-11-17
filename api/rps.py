@@ -7,10 +7,13 @@ import json
 import re
 from datetime import datetime
 
+timeoutLimit = 45
 serverSocket = socket(AF_INET, SOCK_STREAM)
 serverPort = int(sys.argv[1])  # Port number passed as argument
 serverSocket.bind(("", serverPort))
 serverSocket.listen(5)  # listen for X max connections at a time
+serverSocket.settimeout(timeoutLimit)
+startTime = time.time()
 playerID = [None, None]
 gameRound = 0
 winner = None
@@ -43,7 +46,7 @@ def bufferWrite(event_type, msg, context=None, p1cast=None, p2cast=None):
     with open('api/buffer_' + str(buffernumber), writemode) as f:
         f.write(line)
     eventID += 1
-    if event_type == "game_winner":
+    if event_type == "game_winner" or event_type == "timeout":
         time.sleep(10)
         os.remove('api/buffer_' + str(buffernumber))
 
@@ -89,8 +92,9 @@ bufferWrite("init", "Game instance initialized")
 while winner is None:
     # Establish the connection
     print("Session " + str(serverPort) + " listening...")
-    connectionSocket, addr = serverSocket.accept()
+    connectionSocket = None
     try:
+        connectionSocket, addr = serverSocket.accept()
         message = connectionSocket.recv(4096)
         filename = message.split()[1].decode()
         action = ""
@@ -153,6 +157,10 @@ while winner is None:
                 bufferWrite("cast_fail", castError, currentPlayer)
         else:
             bufferWrite("status", "ping")
+    except TimeoutError:
+        print("Socket timeout")
+        bufferWrite("timeout", "No input received for " + str(timeoutLimit) + " seconds. Shutting down...")
+        break
     except IOError:
         connectionSocket.send("HTTP/ 1.1 404 Not Found\r\n".encode())
         connectionSocket.send("Content-Type: text/html\r\n".encode())

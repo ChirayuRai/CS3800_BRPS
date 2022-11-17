@@ -257,6 +257,11 @@ else{
                     eventCounter = event.lastEventId;
                     init();
                 });
+                eSource.addEventListener("timeout", (event) => {
+                    timeoutmsg = JSON.parse(event.data).msg;
+                    alert(timeoutmsg);
+                    window.location.href = '/';
+                });
             } else {
                 document.getElementById("serverData").innerHTML = "Whoops! Your browser doesn't receive server-sent events.";
             }
